@@ -34,7 +34,7 @@ jobs:
           python3 tools/git-sync-deps
           bin/fetch-ninja
           export BUILD_ARGS=\
-            target_cpu="arm64" \
+            target_cpu=\"arm64\" \
             is_official_build=true \
             is_debug=false \
             skia_use_libwebp_decode=true \
@@ -43,7 +43,7 @@ jobs:
             skia_use_system_libjpeg_turbo=false \
             skia_use_system_libpng=false \
             skia_use_system_libwebp=false
-          bin/gn gen out/release-darwin-arm64 --args='$BUILD_ARGS'
+          bin/gn gen out/release-darwin-arm64 --args="$BUILD_ARGS"
           bin/gn args out/release-darwin-arm64 --list
           ninja -C out/release-darwin-arm64
           ls -lh out/release-darwin-arm64
