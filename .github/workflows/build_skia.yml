@@ -33,6 +33,7 @@ jobs:
           export PATH=${PWD}/depot_tools:${PATH}
           python3 tools/git-sync-deps
           bin/fetch-ninja
-          bin/gn gen out/release-darwin-arm64 --args='target_cpu="arm64" is_official_build=true is_debug=false'
+          bin/gn gen out/release-darwin-arm64 --args='target_cpu="arm64" is_official_build=true is_debug=false skia_use_libwebp=false'
+          bin/gn args out/release-darwin-arm64 --list
           ninja -C out/release-darwin-arm64
           ls -lh out/release-darwin-arm64
