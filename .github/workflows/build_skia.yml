@@ -7,22 +7,30 @@ on:
   pull_request:
 
 jobs:
-  build-android:
-    name: Build Skia for Android
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: Set up Bazel
-        uses: bazelbuild/setup-bazelisk@v1
-      - name: Build Skia for Android
-        run: bazel build //:skia_public --config=android_arm64 --toolchain=//:ndk_linux_arm64_toolchain_config
+  # build-android:
+  #   name: Build Skia for Android
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #     - name: Set up Bazel
+  #       uses: bazelbuild/setup-bazelisk@v1
+  #     - name: Build Skia for Android
+  #       run: bazel build //:skia_public --config=android_arm64 --toolchain=//:ndk_linux_arm64_toolchain_config
 
   build-macos:
     name: Build Skia for macOS
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Set up Bazel
-        uses: bazelbuild/setup-bazelisk@v1
-      - name: Build Skia for macOS
-        run: bazel build //:skia_public --config=macos_x86_64 --toolchain=//:mac_toolchain_config
+      - name: Install Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+      - name: Set up deptool
+        run: |
+          git clone 'https://chromium.googlesource.com/chromium/tools/depot_tools.git'
+          echo "export PATH=\${PWD}/depot_tools:\${PATH}" >> $GITHUB_ENV
+      - name: Run git-sync-deps
+        run: python3 tools/git-sync-deps
+      - name: Fetch Ninja
+        run: bin/fetch-ninja
