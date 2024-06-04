@@ -1,0 +1,28 @@
+name: Build Skia for Android and macOS
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  build-android:
+    name: Build Skia for Android
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Bazel
+        uses: bazelbuild/setup-bazelisk@v1
+      - name: Build Skia for Android
+        run: bazel build //:skia_public --config=android_arm64 --toolchain=//:ndk_linux_arm64_toolchain_config
+
+  build-macos:
+    name: Build Skia for macOS
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Bazel
+        uses: bazelbuild/setup-bazelisk@v1
+      - name: Build Skia for macOS
+        run: bazel build //:skia_public --config=macos_x86_64 --toolchain=//:mac_toolchain_config
