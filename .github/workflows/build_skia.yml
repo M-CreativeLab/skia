@@ -33,8 +33,18 @@ jobs:
           export PATH=${PWD}/depot_tools:${PATH}
           python3 tools/git-sync-deps
           bin/fetch-ninja
-          bin/gn gen out/release-darwin-arm64 --args='target_cpu="arm64" is_official_build=true is_debug=false skia_use_libwebp=false'
+          bin/gn gen out/release-darwin-arm64 \
+            --args=' \
+            target_cpu="arm64" \
+            is_official_build=true \
+            is_debug=false \
+            skia_use_libwebp_decode=true \
+            skia_use_libwebp_encode=true \
+            skia_use_libwebp=false \
+            skia_use_system_libjpeg_turbo=false \
+            skia_use_system_libpng=false \
+            skia_use_system_libwebp=false \
+            '
           bin/gn args out/release-darwin-arm64 --list
-          tools/install_dependencies.sh
           ninja -C out/release-darwin-arm64
           ls -lh out/release-darwin-arm64
